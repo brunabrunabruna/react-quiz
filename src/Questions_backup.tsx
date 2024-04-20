@@ -1,7 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import GameCard from "./GameCard";
-import CardContainer from "./CardContainer";
-import LoadingCard from "./LoadingCard";
 
 // definition of the Question type (for typescript), obj received from the api
 interface Question {
@@ -85,11 +82,7 @@ const Questions = () => {
 
   // displays this component if api is still being fetched
   if (isLoading) {
-    return (
-      <CardContainer>
-        <LoadingCard />
-      </CardContainer>
-    );
+    return <div>loading...</div>;
   }
 
   // checks if all the questions have already been displayed, and resets it
@@ -97,40 +90,55 @@ const Questions = () => {
     // setIsGameOver(true);
     return (
       <>
-        <CardContainer>
-          <div>
-            game over, your score is{" "}
-            <div className=" text-6xl mt-3 mb-3">
-              {quizScore}/{questions.length}
-            </div>
-          </div>
-          <button
-            className=" bg-lime-800 text-white p-3 rounded w-full text-lg 
-          mb-3 mt-3
-          "
-            onClick={() => {
-              reloadGame();
-            }}
-          >
-            restart game
-          </button>
-        </CardContainer>
+        <div>game over, your score is {quizScore}</div>
+        <button
+          onClick={() => {
+            reloadGame();
+          }}
+        >
+          restart game
+        </button>
       </>
     );
   }
 
   return (
-    <CardContainer>
-      <GameCard
-        currentQuestionIndex={currentQuestionIndex}
-        questions={questions}
-        answersArray={answersArray}
-        correctAnswer={correctAnswer}
-        setCurrentQuestionIndex={setCurrentQuestionIndex}
-        setQuizScore={setQuizScore}
-        quizScore={quizScore}
-      />
-    </CardContainer>
+    <div className=" bg-lime-600 h-screen flex items-center justify-center ">
+      <div
+        className=" bg-lime-100  flex flex-col items-center text-center 
+      max-w-full m-5 rounded p-5 sm:text-center "
+      >
+        {/* displays current and total questions number */}
+        <p className=" text-2xl">
+          Question {currentQuestionIndex + 1}/{questions.length}
+        </p>
+        {/* displays the question corresponding to the questionCount number on
+         the questions array */}
+        <h2 className="  text-neutral-900 mt-5">
+          {questions[currentQuestionIndex].question}
+        </h2>
+        <div className=" flex flex-col mt-10 w-full">
+          {answersArray.map((answer, index: number) => {
+            return (
+              <button
+                key={index}
+                className=" bg-lime-800 text-white p-3 rounded w-full text-lg 
+                mb-3
+                "
+                onClick={() => {
+                  setCurrentQuestionIndex(currentQuestionIndex + 1);
+                  answer === correctAnswer
+                    ? setQuizScore(quizScore + 1)
+                    : setQuizScore(quizScore);
+                }}
+              >
+                {answer}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 };
 
