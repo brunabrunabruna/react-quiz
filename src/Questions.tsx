@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import CardContainer from "./CardContainer";
 import LoadingCard from "./LoadingCard";
+import { decode } from "html-entities";
 
 // definition of the Question type (for typescript), obj received from the api
 interface Question {
   question: string;
-  incorrect_answers: [string, string, string];
+  incorrect_answers: string[];
   correct_answer: string;
 }
 
@@ -42,8 +43,18 @@ const Questions = () => {
         // const decodedData = decodeURIComponent(data);
         // console.log("decoded data: ", decodedData);
         // const parsedData = JSON.parse(decodedData) as unknown;
-        const tempQuestions =
-          (data as { results?: Question[] } | undefined)?.results ?? [];
+
+        const tempQuestions = (
+          (data as { results?: Question[] } | undefined)?.results ?? []
+        ).map((question) => {
+          return {
+            correct_answer: decode(question.correct_answer),
+            incorrect_answers: question.incorrect_answers.map((i) => {
+              return decode(i);
+            }),
+            question: decode(question.question),
+          };
+        });
 
         setQuestions(tempQuestions);
         console.log("data", data);
