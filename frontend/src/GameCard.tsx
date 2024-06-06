@@ -1,6 +1,6 @@
 import React from "react";
 
-interface GameCardProps {
+type GameCardProps = {
   currentQuestionIndex: number;
   questions: Question[];
   correctAnswer: string;
@@ -8,13 +8,13 @@ interface GameCardProps {
   setCurrentQuestionIndex: (number) => void;
   setQuizScore: (number) => void;
   quizScore: number;
-}
+};
 
 interface Question {
   question: string;
 }
 
-const GameCard: React.FC<GameCardProps> = (props) => {
+const GameCard = (props: GameCardProps) => {
   return (
     <>
       {/* displays current and total questions number */}

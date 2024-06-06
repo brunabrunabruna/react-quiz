@@ -3,6 +3,7 @@ import GameCard from "./GameCard";
 import CardContainer from "./CardContainer";
 import LoadingCard from "./LoadingCard";
 import { decode } from "html-entities";
+import Username from "./Username";
 
 // definition of the Question type (for typescript), obj received from the api
 interface Question {
@@ -14,12 +15,15 @@ interface Question {
 const Questions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUsernameDefined, setIsUsernameDefined] = useState(false);
+  const [username, setUsername] = useState("");
+
   // counts which question and answers should be currently displayed, updated
   // when answer button is clicked
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   // tracks how many questions user gets correctly
-  const [quizScore, setQuizScore] = useState(0);
+  const [score, setScore] = useState(0);
 
   //
   const [answersArray, setAnswersArray] = useState<string[]>([]);
@@ -30,34 +34,28 @@ const Questions = () => {
   // sets isLoading to false
   const reloadGame = useCallback(() => {
     setCurrentQuestionIndex(0);
-    setQuizScore(0);
+    setScore(0);
     setAnswersArray([]);
     setIsLoading(true);
 
-    void fetch(
-      // "https://opentdb.com/api.php?amount=10&category=25&type=multiple&encode=url3986"
-      "https://opentdb.com/api.php?amount=10&type=multiple"
-    )
+    fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((response) => response.json())
       .then((data) => {
-        // const decodedData = decodeURIComponent(data);
-        // console.log("decoded data: ", decodedData);
-        // const parsedData = JSON.parse(decodedData) as unknown;
-
-        const tempQuestions = (
-          (data as { results?: Question[] } | undefined)?.results ?? []
-        ).map((question) => {
-          return {
-            correct_answer: decode(question.correct_answer),
-            incorrect_answers: question.incorrect_answers.map((i) => {
-              return decode(i);
-            }),
-            question: decode(question.question),
-          };
-        });
+        // handles the decoding of some characters like "" from what we get from the api, so these characters are showed up normally in the displayed text
+        const tempQuestions = // help
+          ((data as { results?: Question[] } | undefined)?.results ?? []).map(
+            (question) => {
+              return {
+                correct_answer: decode(question.correct_answer),
+                incorrect_answers: question.incorrect_answers.map((i) => {
+                  return decode(i);
+                }),
+                question: decode(question.question),
+              };
+            }
+          );
 
         setQuestions(tempQuestions);
-        console.log("data", data);
 
         setIsLoading(false);
       })
@@ -67,6 +65,7 @@ const Questions = () => {
       });
   }, []);
 
+  // help
   useEffect(() => {
     reloadGame();
   }, [reloadGame]);
@@ -75,7 +74,6 @@ const Questions = () => {
   useEffect(() => {
     // generates a random index number for correct_answer
     const randomNumber1to4 = Math.round(Math.random() * 3);
-    console.log(randomNumber1to4);
 
     // creates an array to assemble the incorrect and correct answers randomly
     const randomAnswersArray = [
@@ -88,11 +86,24 @@ const Questions = () => {
       0,
       questions[currentQuestionIndex]?.correct_answer ?? ""
     );
-    console.log("randomAnswersArray", randomAnswersArray);
+    // console.log("randomAnswersArray", randomAnswersArray);
     setAnswersArray(randomAnswersArray);
     setCorrectAnswer(questions[currentQuestionIndex]?.correct_answer ?? "");
   }, [questions, currentQuestionIndex]);
-  console.log("correctAnswer", correctAnswer);
+  // console.log("correctAnswer", correctAnswer);
+
+  // user defines their username
+  if (!isUsernameDefined) {
+    return (
+      <CardContainer>
+        <Username
+          username={username}
+          setUsername={setUsername}
+          setIsUsernameDefined={setIsUsernameDefined}
+        />
+      </CardContainer>
+    );
+  }
 
   // displays this component if api is still being fetched
   if (isLoading) {
@@ -105,14 +116,28 @@ const Questions = () => {
 
   // checks if all the questions have already been displayed, and resets it
   if (currentQuestionIndex >= questions.length) {
-    // setIsGameOver(true);
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, score: score }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("data:", data))
+      .catch((error) => {
+        console.log("error:", error);
+      });
+
+    console.log(`username:`, username, "score:", score);
+
     return (
       <>
         <CardContainer>
           <div>
-            game over, your score is{" "}
+            game over <b>{username}</b>, your score is
             <div className=" text-6xl mt-3 mb-3">
-              {quizScore}/{questions.length}
+              {score}/{questions.length}
             </div>
           </div>
           <button
@@ -138,8 +163,8 @@ const Questions = () => {
         answersArray={answersArray}
         correctAnswer={correctAnswer}
         setCurrentQuestionIndex={setCurrentQuestionIndex}
-        setQuizScore={setQuizScore}
-        quizScore={quizScore}
+        setQuizScore={setScore}
+        quizScore={score}
       />
     </CardContainer>
   );
