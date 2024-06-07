@@ -1,5 +1,9 @@
-import bodyParser from "body-parser";
-import express, { Request, Response } from "express";
+const bodyParser = require("body-parser");
+// import express, { Request, Response } from "express";
+const express = require("express");
+
+// const requestType = express.Request;
+// const Response = express.Response;
 
 //for some reason cors import has to be the older version, otherwise it fails to run
 const cors = require("cors");
@@ -25,19 +29,24 @@ let users: User = [
   { username: "test user 2", score: 5 },
 ];
 
-app.post("/users", (request: Request, response: Response) => {
+app.post("/users", (request: any, response: any) => {
   const username = request.body.username;
   const score = request.body.score;
 
   if (!username) {
     response.status(400).json({ error: "username is not defined" });
   }
+  //write in mongoosee
   users.push({ username: username, score: score });
-  response.status(201).json({ username });
+
+  //get top 10 scores: sort array by score
+  const top10 = [];
+
+  response.status(201).json(top10);
 });
 
-app.get("/users", (request: Request, response: Response) => {
-  response.json(users);
+app.get("/users", (request: any, response: Response) => {
+  // response.json(users);
 });
 
 app.listen(port, () => {
