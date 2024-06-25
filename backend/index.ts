@@ -1,7 +1,8 @@
+require("dotenv").config();
 import { MongoClient } from "mongodb";
 const mongoose = require("mongoose");
+//mongoose schema, so uniformity is enforced on our data
 import Player from "./model";
-
 const bodyParser = require("body-parser");
 // import express, { Request, Response } from "express";
 const express = require("express");
@@ -42,10 +43,18 @@ app.use(cors());
 //   console.log(databasesList);
 // };
 
-mongoose.connect(
-  "mongodb+srv://brunaandreis:gW9FO8ek51y5OFzm@cluster0.0fxk81l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-);
+console.log("MongoDB URI:", process.env.MONGO_STRING);
 
+//connecting to the mongodb database. MONGO_STRING is defined at .env
+mongoose
+  .connect(process.env.MONGO_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB..."))
+  .catch((err: any) => console.error("Could not connect to MongoDB...", err));
+
+//adds a new player
 app.post("/", (request: any, response: any) => {
   const username = request.body.username;
   const score = request.body.score;
@@ -56,7 +65,7 @@ app.post("/", (request: any, response: any) => {
   //write in mongoosee
   // users.push ({ username: username, score: score });
 
-  //new user
+  //new player obj with current username and score.
   const player = new Player.create({
     username: username,
     score: score,
@@ -70,7 +79,7 @@ app.post("/", (request: any, response: any) => {
 });
 
 const firstPlayer = Player.findOne({});
-console.log(firstPlayer);
+// console.log(firstPlayer);
 
 app.get("/users", (request: any, response: Response) => {
   // response.json(users);
