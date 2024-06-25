@@ -1,3 +1,7 @@
+import { MongoClient } from "mongodb";
+const mongoose = require("mongoose");
+import Player from "./model";
+
 const bodyParser = require("body-parser");
 // import express, { Request, Response } from "express";
 const express = require("express");
@@ -11,39 +15,62 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send("Something broke!");
-// });
-
 app.use(bodyParser.json());
 app.use(cors());
 
-type User = {
-  username: string;
-  score: number;
-}[];
+// const dbConnecting = async () => {
+//   const uri =
+//     "mongodb+srv://brunaandreis:gW9FO8ek51y5OFzm@cluster0.0fxk81l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-let users: User = [
-  { username: "test username1", score: 3 },
-  { username: "test user 2", score: 5 },
-];
+//   const client = new MongoClient(uri);
 
-app.post("/users", (request: any, response: any) => {
+//   try {
+//     await client.connect();
+//     listDatabases(client);
+//   } catch (error) {
+//     console.error(error);
+//   }
+//   // finally {
+//   //   await client.close();
+//   // }
+// };
+
+// dbConnecting().catch(console.error);
+
+// const listDatabases = async (client: MongoClient) => {
+//   const databasesList = await client.db().collections();
+//   console.log(databasesList);
+// };
+
+mongoose.connect(
+  "mongodb+srv://brunaandreis:gW9FO8ek51y5OFzm@cluster0.0fxk81l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+);
+
+app.post("/", (request: any, response: any) => {
   const username = request.body.username;
   const score = request.body.score;
 
-  if (!username) {
-    response.status(400).json({ error: "username is not defined" });
+  if (!request.body) {
+    response.status(400).json({ error: "username or score is not defined" });
   }
   //write in mongoosee
-  users.push({ username: username, score: score });
+  // users.push ({ username: username, score: score });
 
+  //new user
+  const player = new Player.create({
+    username: username,
+    score: score,
+  });
+
+  console.log(player);
   //get top 10 scores: sort array by score
-  const top10 = [];
+  // const top10: [] = [];
 
-  response.status(201).json(top10);
+  // response.status(201).json(top10);
 });
+
+const firstPlayer = Player.findOne({});
+console.log(firstPlayer);
 
 app.get("/users", (request: any, response: Response) => {
   // response.json(users);

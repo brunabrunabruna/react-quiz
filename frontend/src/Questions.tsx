@@ -116,20 +116,31 @@ const Questions = () => {
 
   // checks if all the questions have already been displayed, and resets it
   if (currentQuestionIndex >= questions.length) {
-    fetch("http://localhost:3000/users", {
+    fetch("http://localhost:3000/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username: username, score: score }),
     })
-      .then((response) => response.json())
-      .then((data) => console.log("data:", data))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then((data) => {
+        if (data) {
+          console.log("data:", JSON.parse(data));
+        } else {
+          console.log("no data passed from the server");
+        }
+      })
       .catch((error) => {
         console.log("error:", error);
       });
 
-    console.log(`username:`, username, "score:", score);
+    // console.log(`username:`, username, "score:", score);
 
     return (
       <>
