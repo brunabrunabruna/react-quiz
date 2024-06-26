@@ -11,38 +11,39 @@ interface Question {
   incorrect_answers: string[];
   correct_answer: string;
 }
-
 const Questions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUsernameDefined, setIsUsernameDefined] = useState(false);
   const [username, setUsername] = useState("");
-
   // counts which question and answers should be currently displayed, updated
   // when answer button is clicked
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
   // tracks how many questions user gets correctly
   const [score, setScore] = useState(0);
 
-  //
   const [answersArray, setAnswersArray] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
+  //checks if the new player has already been submitted to the database throught the post request (fetch)
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // fetches data from the api, transforms the response into json, and
   // saves it into the questions variable
   // sets isLoading to false
   const reloadGame = useCallback(() => {
+    setUsername("");
+    setIsUsernameDefined(false);
     setCurrentQuestionIndex(0);
     setScore(0);
     setAnswersArray([]);
     setIsLoading(true);
+    // setHasSubmitted(false);
 
     fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((response) => response.json())
       .then((data) => {
         // handles the decoding of some characters like "" from what we get from the api, so these characters are showed up normally in the displayed text
-        const tempQuestions = // help
+        const tempQuestions = // typescript help
           ((data as { results?: Question[] } | undefined)?.results ?? []).map(
             (question) => {
               return {
@@ -86,9 +87,9 @@ const Questions = () => {
       0,
       questions[currentQuestionIndex]?.correct_answer ?? ""
     );
-    // console.log("randomAnswersArray", randomAnswersArray);
     setAnswersArray(randomAnswersArray);
     setCorrectAnswer(questions[currentQuestionIndex]?.correct_answer ?? "");
+    console.log("correctAnswer", correctAnswer);
   }, [questions, currentQuestionIndex]);
   // console.log("correctAnswer", correctAnswer);
 
@@ -115,20 +116,17 @@ const Questions = () => {
   }
 
   // checks if all the questions have already been displayed, and resets it
+  //help @felix
   if (currentQuestionIndex >= questions.length) {
-    fetch("http://localhost:3000/", {
+    // setHasSubmitted(true);
+    fetch("http://localhost:3000/players", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username: username, score: score }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-      })
+      .then((response) => response.json())
       .then((data) => {
         if (data) {
           console.log("data:", JSON.parse(data));
@@ -139,8 +137,8 @@ const Questions = () => {
       .catch((error) => {
         console.log("error:", error);
       });
-
-    // console.log(`username:`, username, "score:", score);
+    console.log("test");
+    console.log(`username:`, username, "score:", score);
 
     return (
       <>

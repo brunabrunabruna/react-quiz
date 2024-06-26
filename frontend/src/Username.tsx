@@ -7,7 +7,7 @@ const Username = (props: {
 }) => {
   const handleChange = (event) => {
     props.setUsername(event.target.value);
-    console.log(props.username);
+    // console.log(props.username);
   };
 
   const handleClick = () => {

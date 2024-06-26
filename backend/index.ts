@@ -1,8 +1,8 @@
 require("dotenv").config();
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 const mongoose = require("mongoose");
-//mongoose schema, so uniformity is enforced on our data
-import Player from "./model";
+//mongoose schema, so uniformity is enforced on our data. Players gives me access to my all my players collection, by writing Players.find() for ex. i can log all my currently saved players
+import Players from "./model";
 const bodyParser = require("body-parser");
 // import express, { Request, Response } from "express";
 const express = require("express");
@@ -19,67 +19,47 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-// const dbConnecting = async () => {
-//   const uri =
-//     "mongodb+srv://brunaandreis:gW9FO8ek51y5OFzm@cluster0.0fxk81l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-//   const client = new MongoClient(uri);
-
-//   try {
-//     await client.connect();
-//     listDatabases(client);
-//   } catch (error) {
-//     console.error(error);
-//   }
-//   // finally {
-//   //   await client.close();
-//   // }
-// };
-
-// dbConnecting().catch(console.error);
-
-// const listDatabases = async (client: MongoClient) => {
-//   const databasesList = await client.db().collections();
-//   console.log(databasesList);
-// };
-
-console.log("MongoDB URI:", process.env.MONGO_STRING);
-
-//connecting to the mongodb database. MONGO_STRING is defined at .env
+//connecting to the mongodb database unsing mongoose. MONGO_STRING is defined at .env
 mongoose
-  .connect(process.env.MONGO_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_STRING)
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err: any) => console.error("Could not connect to MongoDB...", err));
 
 //adds a new player
-app.post("/", (request: any, response: any) => {
+//typescript help
+//help @felix
+app.post("/players", (request: any, response: any) => {
   const username = request.body.username;
   const score = request.body.score;
 
-  if (!request.body) {
-    response.status(400).json({ error: "username or score is not defined" });
+  //checks if username or score are missing
+  if (!username || !score) {
+    return response
+      .status(400)
+      .json({ error: "username or score is not defined" });
   }
-  //write in mongoosee
-  // users.push ({ username: username, score: score });
 
-  //new player obj with current username and score.
-  const player = new Player.create({
+  //new player instance with current username and score. Will be saved to mongodb collection
+  const player = new Players({
     username: username,
     score: score,
   });
 
-  console.log(player);
-  //get top 10 scores: sort array by score
-  // const top10: [] = [];
-
-  // response.status(201).json(top10);
+  //saves the new player instance to the database with the .save() method.
+  player
+    .save()
+    .then((savedPlayer: any) => {
+      //response 201 means Created status
+      response.status(201).json(savedPlayer);
+      console.log("saved player: ", savedPlayer);
+    })
+    .catch((e: any) => {
+      response
+        .status(500)
+        .json({ error: "could not save player to database", details: e });
+      console.log("error trying to create new player: ", e);
+    });
 });
-
-const firstPlayer = Player.findOne({});
-// console.log(firstPlayer);
 
 app.get("/users", (request: any, response: Response) => {
   // response.json(users);
