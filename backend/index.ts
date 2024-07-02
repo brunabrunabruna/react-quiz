@@ -3,15 +3,15 @@ import { Db, MongoClient } from "mongodb";
 const mongoose = require("mongoose");
 //mongoose schema, so uniformity is enforced on our data. Players gives me access to my all my players collection, by writing Players.find() for ex. i can log all my currently saved players
 import Players from "./model";
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
 // import express, { Request, Response } from "express";
-const express = require("express");
+import express from "express";
 
 // const requestType = express.Request;
 // const Response = express.Response;
 
 //for some reason cors import has to be the older version, otherwise it fails to run
-const cors = require("cors");
+import cors from "cors";
 
 const app = express();
 const port = 3000;

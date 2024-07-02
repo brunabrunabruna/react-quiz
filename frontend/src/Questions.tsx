@@ -25,7 +25,8 @@ const Questions = () => {
   const [answersArray, setAnswersArray] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   //checks if the new player has already been submitted to the database throught the post request (fetch)
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  // const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   // fetches data from the api, transforms the response into json, and
   // saves it into the questions variable
@@ -38,6 +39,7 @@ const Questions = () => {
     setAnswersArray([]);
     setIsLoading(true);
     // setHasSubmitted(false);
+    setIsGameOver(false);
 
     fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((response) => response.json())
@@ -117,54 +119,56 @@ const Questions = () => {
 
   // checks if all the questions have already been displayed, and resets it
   //help @felix
-  if (currentQuestionIndex >= questions.length) {
-    // setHasSubmitted(true);
-    fetch("http://localhost:3000/players", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: username, score: score }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          console.log("data:", JSON.parse(data));
-        } else {
-          console.log("no data passed from the server");
-        }
-      })
-      .catch((error) => {
-        console.log("error:", error);
-      });
-    console.log("test");
-    console.log(`username:`, username, "score:", score);
+  useEffect(() => {
+    if (currentQuestionIndex >= questions.length) {
+      setIsGameOver(true);
 
-    return (
-      <>
-        <CardContainer>
-          <div>
-            game over <b>{username}</b>, your score is
-            <div className=" text-6xl mt-3 mb-3">
-              {score}/{questions.length}
-            </div>
+      //sends the players username and score through a post request to the database
+      fetch("http://localhost:3000/players", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, score: score }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            console.log("data:", JSON.parse(data));
+          } else {
+            console.log("no data passed from the server");
+          }
+        })
+        .catch((error) => {
+          console.log("error:", error);
+        });
+      console.log("test");
+      console.log(`username:`, username, "score:", score);
+    }
+  }, [questions, currentQuestionIndex]);
+
+  return isGameOver ? (
+    <>
+      <CardContainer>
+        <div>
+          game over <b>{username}</b>, your score is
+          <div className=" text-6xl mt-3 mb-3">
+            {score}/{questions.length}
           </div>
-          <button
-            className=" bg-lime-800 text-white p-3 rounded w-full text-lg 
+        </div>
+        <button
+          className=" bg-lime-800 text-white p-3 rounded w-full text-lg 
           mb-3 mt-3
           "
-            onClick={() => {
-              reloadGame();
-            }}
-          >
-            restart game
-          </button>
-        </CardContainer>
-      </>
-    );
-  }
-
-  return (
+          onClick={() => {
+            reloadGame();
+          }}
+        >
+          restart game
+        </button>
+      </CardContainer>
+    </>
+  ) : (
     <CardContainer>
       <GameCard
         currentQuestionIndex={currentQuestionIndex}

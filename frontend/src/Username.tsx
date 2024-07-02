@@ -5,26 +5,13 @@ const Username = (props: {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   setIsUsernameDefined: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const handleChange = (event) => {
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     props.setUsername(event.target.value);
-    // console.log(props.username);
   };
 
   const handleClick = () => {
-    // fetch("http://localhost:3000/users", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ username: props.username }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => {
-    //     console.log("error:", error);
-    //   });
-
-    // console.log(`username:`, props.username);
     props.setIsUsernameDefined(true);
   };
   return (
