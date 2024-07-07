@@ -3,7 +3,7 @@ import GameCard from "./GameCard";
 import CardContainer from "./CardContainer";
 import LoadingCard from "./LoadingCard";
 import { decode } from "html-entities";
-import Username from "./Username";
+import Username from "./UsernameInput";
 
 // definition of the Question type (for typescript), obj received from the api
 interface Question {
@@ -24,8 +24,6 @@ const Questions = () => {
 
   const [answersArray, setAnswersArray] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
-  //checks if the new player has already been submitted to the database throught the post request (fetch)
-  // const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
   // fetches data from the api, transforms the response into json, and
@@ -38,13 +36,14 @@ const Questions = () => {
     setScore(0);
     setAnswersArray([]);
     setIsLoading(true);
-    // setHasSubmitted(false);
     setIsGameOver(false);
 
     fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((response) => response.json())
       .then((data) => {
-        // handles the decoding of some characters like "" from what we get from the api, so these characters are showed up normally in the displayed text
+        // handles the decoding of some characters like "" from
+        // what we get from the api, so these characters are
+        // showed up normally in the displayed text
         const tempQuestions = // typescript help
           ((data as { results?: Question[] } | undefined)?.results ?? []).map(
             (question) => {
@@ -91,9 +90,42 @@ const Questions = () => {
     );
     setAnswersArray(randomAnswersArray);
     setCorrectAnswer(questions[currentQuestionIndex]?.correct_answer ?? "");
-    console.log("correctAnswer", correctAnswer);
   }, [questions, currentQuestionIndex]);
-  // console.log("correctAnswer", correctAnswer);
+
+  useEffect(() => {
+    console.log("correctAnswer", correctAnswer);
+  }, [correctAnswer]);
+
+  // checks if all the questions have already been displayed, and resets it
+  // help @felix
+  useEffect(() => {
+    if (currentQuestionIndex >= questions.length && questions.length !== 0) {
+      setIsGameOver(true);
+
+      // sends the players username and score through a post request
+      // to the database
+      fetch("http://localhost:3000/players", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, score: score }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            console.log("data:", JSON.stringify(data));
+          } else {
+            console.log("no data passed from the server");
+          }
+        })
+        .catch((error) => {
+          console.log("error:", error);
+        });
+      console.log("test");
+      console.log(`username:`, username, "score:", score);
+    }
+  }, [questions, currentQuestionIndex, score, username]);
 
   // user defines their username
   if (!isUsernameDefined) {
@@ -117,36 +149,6 @@ const Questions = () => {
     );
   }
 
-  // checks if all the questions have already been displayed, and resets it
-  //help @felix
-  useEffect(() => {
-    if (currentQuestionIndex >= questions.length) {
-      setIsGameOver(true);
-
-      //sends the players username and score through a post request to the database
-      fetch("http://localhost:3000/players", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: username, score: score }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data) {
-            console.log("data:", JSON.parse(data));
-          } else {
-            console.log("no data passed from the server");
-          }
-        })
-        .catch((error) => {
-          console.log("error:", error);
-        });
-      console.log("test");
-      console.log(`username:`, username, "score:", score);
-    }
-  }, [questions, currentQuestionIndex]);
-
   return isGameOver ? (
     <>
       <CardContainer>
@@ -157,9 +159,8 @@ const Questions = () => {
           </div>
         </div>
         <button
-          className=" bg-lime-800 text-white p-3 rounded w-full text-lg 
-          mb-3 mt-3
-          "
+          className="bg-lime-800 text-white p-3 rounded w-full text-lg 
+          mb-3 mt-3"
           onClick={() => {
             reloadGame();
           }}

@@ -1,13 +1,13 @@
 import React from "react";
 
-const Username = (props: {
+type UsernameProps = {
   username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setIsUsernameDefined: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const handleChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  setUsername: (username: string) => void;
+  setIsUsernameDefined: (isUsernameDefined: boolean) => void;
+};
+
+const Username = (props: UsernameProps) => {
+  const handleChange = (event: { target: { value: string } }) => {
     props.setUsername(event.target.value);
   };
 

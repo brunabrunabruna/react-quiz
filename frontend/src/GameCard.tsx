@@ -5,14 +5,14 @@ type GameCardProps = {
   questions: Question[];
   correctAnswer: string;
   answersArray: string[];
-  setCurrentQuestionIndex: (number) => void;
-  setQuizScore: (number) => void;
+  setCurrentQuestionIndex: (index: number) => void;
+  setQuizScore: (score: number) => void;
   quizScore: number;
 };
 
-interface Question {
+type Question = {
   question: string;
-}
+};
 
 const GameCard = (props: GameCardProps) => {
   return (
@@ -23,9 +23,13 @@ const GameCard = (props: GameCardProps) => {
       </p>
       {/* displays the question corresponding to the questionCount number on
    the questions array */}
-      <h2 className="  text-neutral-900 mt-5">
-        {props.questions[props.currentQuestionIndex].question}
-      </h2>
+      {props.currentQuestionIndex <= 10 ? (
+        <h2 className="  text-neutral-900 mt-5">
+          {props.questions[props.currentQuestionIndex]?.question}
+        </h2>
+      ) : (
+        <></>
+      )}
       <div className=" flex flex-col mt-10 w-full">
         {props.answersArray.map((answer, index: number) => {
           return (

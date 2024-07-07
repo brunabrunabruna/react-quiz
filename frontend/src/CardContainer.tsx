@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 
-interface CardContainerProps {
+type CardContainerProps = {
   children: ReactNode;
-}
+};
 
-const CardContainer: React.FC<CardContainerProps> = (props) => {
+const CardContainer = (props: CardContainerProps) => {
   return (
     <div className=" bg-lime-600 h-screen flex items-center justify-center ">
       <div
