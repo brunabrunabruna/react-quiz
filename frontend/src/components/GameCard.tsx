@@ -28,6 +28,7 @@ const GameCard = (props: GameCardProps) => {
       props.questionData.correctAnswer ?? ""
     );
     setAnswers(randomAnswersArray);
+    console.log(props.questionData.correctAnswer);
   }, [props.questionData]);
 
   return (

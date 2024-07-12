@@ -131,7 +131,7 @@ const useQuiz = (args: {
           console.log(" sorted players", sortedPlayers);
 
           // selects the highest scores from the players array
-          const top = sortedPlayers.slice(0, topScoresNumber - 1);
+          const top = sortedPlayers.slice(0, topScoresNumber);
           setTopPlayers(top);
         })
         .catch((e) =>

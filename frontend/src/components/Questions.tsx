@@ -20,6 +20,7 @@ const Questions = () => {
     questions,
     setCurrentQuestionIndex,
     reloadGame,
+    topPlayers,
   } = useQuiz({
     setIsUsernameDefined,
     username,
@@ -57,6 +58,7 @@ const Questions = () => {
         score={score}
         questionsLength={questions.length}
         reloadGame={reloadGame}
+        topPlayers={topPlayers}
       />
     );
   } else {
