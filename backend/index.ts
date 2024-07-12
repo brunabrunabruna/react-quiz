@@ -67,8 +67,15 @@ app.post("/players", (request, response) => {
 });
 
 app.get("/players", (request, response) => {
-  const allPLayers = Player.find({});
-  console.log(allPLayers);
+  Player.find({})
+    .then((players) => response.status(200).json(players))
+    .catch((e) => {
+      response.status(500).json({
+        error: "could not retrieve all players",
+        details: JSON.stringify(e),
+      });
+      console.log("error trying to create new player: ", e);
+    });
 });
 
 app.listen(port, () => {

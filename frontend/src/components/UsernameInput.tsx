@@ -23,7 +23,7 @@ const Username = (props: UsernameProps) => {
         id="username"
         onChange={handleChange}
       />
-      <button onClick={handleClick}>submit</button>
+      <button onClick={handleClick}>Start Game</button>
     </div>
   );
 };
