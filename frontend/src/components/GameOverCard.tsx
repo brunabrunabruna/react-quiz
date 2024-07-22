@@ -27,10 +27,18 @@ mb-3 mt-3"
         >
           restart game
         </button>
-        <div>top 10 players:</div>
-        {props.topPlayers.map((player, index) => (
-          <div key={index}>{`${player.username}: ${player.score}`}</div>
-        ))}
+        <div>
+          <div className=" p-3 text-lg font-bold">top 10 players:</div>
+          {props.topPlayers.map((player, index) => (
+            <div key={index} className=" grid justify-items-start">
+              <div className=" flex">
+                <div className=" text-left">{`${index + 1}.`}</div>
+                <div className=" ">{`${player.username}: 
+            ${player.score}`}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </CardContainer>
     </>
   );

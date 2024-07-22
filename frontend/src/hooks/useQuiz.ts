@@ -7,7 +7,6 @@ import { decode } from "html-entities";
 const BACKEND_URL = "http://localhost:3000";
 const QUIZ_API_ENDPOINT = "https://opentdb.com/api.php";
 const QUIZ_QUESTION_COUNT = 10;
-const topScoresNumber = 10;
 const useQuiz = (args: {
   setUsername: (username: string) => void;
   setIsUsernameDefined: (isUsernameDefined: boolean) => void;
@@ -75,6 +74,32 @@ const useQuiz = (args: {
       });
   }, [setIsUsernameDefined, setScore, setUsername]);
 
+  // const showTopPlayers = useCallback(() => {
+  //   fetch(`${BACKEND_URL}/players`)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((players: Player[]) => {
+  //       // sets all the players in a state
+  //       // do i need this? //help
+  //       // setPlayersDatabase(players);
+
+  //       // sorts the players array into descending order
+  //       const sorted = [...players].sort((a, b) => b.score - a.score);
+  //       setSortedPlayers(sorted);
+  //       console.log(" sorted players", sortedPlayers);
+
+  //       // selects the highest scores from the players array
+  //       const top = sortedPlayers.slice(0, TOP_PLAYERS_COUNT);
+  //       setTopPlayers(top);
+  //     })
+  //     .catch((e) => console.log("there was a problem fetching the
+  // players", e));
+  // }, [sortedPlayers]);
+
   // help
   useEffect(() => {
     reloadGame();
@@ -95,8 +120,10 @@ const useQuiz = (args: {
         body: JSON.stringify({ username: username, score: score }),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((data: Player[]) => {
           if (data) {
+            setTopPlayers(data);
+
             console.log("data:", JSON.stringify(data));
           } else {
             console.log("no data passed from the server");
@@ -108,38 +135,6 @@ const useQuiz = (args: {
       console.log(`username:`, username, "score:", score);
     }
   }, [questions, currentQuestionIndex, score, username]);
-
-  // gets all users
-  // calculates top10 players
-  useEffect(() => {
-    // if the last question was answered, and questions have already been loaded
-    if (currentQuestionIndex >= questions.length && questions.length !== 0) {
-      fetch(`${BACKEND_URL}/players`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("network response was not ok");
-          }
-          return response.json();
-        })
-        .then((players: Player[]) => {
-          // sets all the players in a state
-          setPlayersDatabase(players);
-
-          // sorts the players array into descending order
-          const sorted = [...players].sort((a, b) => b.score - a.score);
-          setSortedPlayers(sorted);
-          console.log(" sorted players", sortedPlayers);
-
-          // selects the highest scores from the players array
-          const top = sortedPlayers.slice(0, topScoresNumber);
-          setTopPlayers(top);
-        })
-        .catch((e) =>
-          console.log("there was a problem fetching the players", e)
-        );
-    }
-    // playersDatabase "missing", but when added, causes an endless loop. help
-  }, [currentQuestionIndex, questions.length]);
 
   // logs top players
   useEffect(() => {

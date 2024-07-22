@@ -16,7 +16,8 @@ import express from "express";
 import cors from "cors";
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
+const TOP_PLAYERS_COUNT = 10;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -29,8 +30,6 @@ mongoose
   .catch((err) => console.error("Could not connect to MongoDB...", err));
 
 // adds a new player
-// typescript help
-// help @felix
 app.post("/players", (request, response) => {
   const body = request.body as { username?: string; score?: number };
   const { username, score } = body;
@@ -42,42 +41,49 @@ app.post("/players", (request, response) => {
       .json({ error: "username or score is not defined" });
   }
 
-  // new player instance with current username and score.
-  // Will be saved to mongodb collection
-  const player = new Player({
-    username: username,
-    score: score,
-  });
+  // async function so await can be used (instead of many .then())
+  void (async () => {
+    // new player instance with current username and score.
+    // Will be saved to mongodb collection
+    const player = new Player({
+      username: username,
+      score: score,
+    });
 
-  // saves the new player instance to the database with the .save() method.
-  player
-    .save()
-    .then((savedPlayer) => {
-      // response 201 means Created status
-      response.status(201).json(savedPlayer);
-      console.log("saved player: ", savedPlayer);
-    })
-    .catch((e) => {
+    // saves the new player instance to the database with the .save() method.
+    try {
+      const savedPlayer = await player.save();
+      console.log("saved player", savedPlayer);
+    } catch (err) {
       response.status(500).json({
         error: "could not save player to database",
-        details: JSON.stringify(e),
+        details: JSON.stringify(err),
       });
-      console.log("error trying to create new player: ", e);
-    });
-});
+      console.log("error trying to create new player: ", err);
+    }
 
-app.get("/players", (request, response) => {
-  Player.find({})
-    .then((players) => response.status(200).json(players))
-    .catch((e) => {
+    // queries through all the players, sorts them and
+    // retrieves a max of 10 (or top players count)
+    try {
+      const topPlayers = await Player.find()
+        .sort({ score: "desc" })
+        .limit(TOP_PLAYERS_COUNT)
+        .exec();
+      console.log(topPlayers);
+
+      // sends the top players list as a response
+      // (which can be accessed in the frontend)
+      return response.status(200).json(topPlayers);
+    } catch (err) {
       response.status(500).json({
-        error: "could not retrieve all players",
-        details: JSON.stringify(e),
+        error: "could not fetch top players",
+        details: JSON.stringify(err),
       });
-      console.log("error trying to create new player: ", e);
-    });
+      console.log("error trying to create new player: ", err);
+    }
+  })();
 });
 
-app.listen(port, () => {
-  console.log(`running on port ${port}...`);
+app.listen(PORT, () => {
+  console.log(`running on port ${PORT}...`);
 });
