@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import dotsImg from "../assets/img/dots.jpg";
 
 type CardContainerProps = {
   children: ReactNode;
@@ -6,10 +7,13 @@ type CardContainerProps = {
 
 const CardContainer = (props: CardContainerProps) => {
   return (
-    <div className=" bg-lime-600 h-screen flex items-center justify-center ">
+    <div className=" relative h-screen flex items-center justify-center ">
+      <div className=" absolute z-0 drop-shadow-lg">
+        <img src={dotsImg} />
+      </div>
       <div
-        className=" bg-lime-100  flex flex-col items-center text-center 
-      max-w-full m-5 rounded p-5 sm:text-center "
+        className=" flex flex-col items-center text-center 
+     w-96 m-5 rounded p-5 sm:text-center z-10 "
       >
         {props.children}
       </div>

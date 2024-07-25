@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Handjet Bold";
+  src: url("./assets/fonts/Handjet-Bold.ttf");
+}
+
+@font-face {
+  font-family: "SpaceMono Regular";
+  src: url("./assets/fonts/SpaceMono-Regular.ttf");
+}
+@font-face {
+  font-family: "SpaceMono Bold";
+  src: url("./assets/fonts/SpaceMono-Bold.ttf");
+}
+
+body {
+  font-family: "SpaceMono Regular", sans-serif;
+  background-color: #fff2f7;
+}
+/* body {
+  font-family: "Handjet Bold", sans-serif;
+} */
+
+.button {
+  background-color: #da91ad;
+  filter: drop-shadow(0.5, 0.5, 1, 1);
+  transition: transform 1s, ease 0;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.question-count {
+  top: 4.5rem;
+  right: 1.8rem;
+  --tw-rotate: 28deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.question {
+  font-family: "SpaceMono Bold", sans-serif;
+}

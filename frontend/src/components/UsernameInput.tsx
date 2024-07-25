@@ -23,7 +23,12 @@ const Username = (props: UsernameProps) => {
         id="username"
         onChange={handleChange}
       />
-      <button onClick={handleClick}>Start Game</button>
+      <button
+        className=" drop-shadow-lg p-3 m-3 bg-white rounded-lg "
+        onClick={handleClick}
+      >
+        Start Game
+      </button>
     </div>
   );
 };

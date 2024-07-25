@@ -5,7 +5,6 @@ import CardContainer from "./CardContainer";
 import GameCard from "./GameCard";
 import useQuiz from "../hooks/useQuiz";
 import GameOverCard from "./GameOverCard";
-
 const Questions = () => {
   const [isUsernameDefined, setIsUsernameDefined] = useState(false);
   const [username, setUsername] = useState("");
@@ -21,7 +20,6 @@ const Questions = () => {
     setCurrentQuestionIndex,
     reloadGame,
     topPlayers,
-    showTopPlayers,
   } = useQuiz({
     setIsUsernameDefined,
     username,
@@ -60,12 +58,11 @@ const Questions = () => {
         questionsLength={questions.length}
         reloadGame={reloadGame}
         topPlayers={topPlayers}
-        showTopPlayers={showTopPlayers}
       />
     );
   } else {
     return (
-      <CardContainer>
+      <div>
         {currentQuestionIndex < questions.length && (
           <GameCard
             currentQuestionIndex={currentQuestionIndex}
@@ -79,7 +76,7 @@ const Questions = () => {
             totalQuestionsCount={questions.length}
           />
         )}
-      </CardContainer>
+      </div>
     );
   }
 };

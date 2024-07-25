@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { QuestionData } from "../lib/types";
+import dotsImg from "../assets/img/dots.jpg";
+import pinkTape from "../assets/img/pinkTape.png";
+import stars from "../assets/img/stars.png";
 
 type GameCardProps = {
   currentQuestionIndex: number;
@@ -33,28 +36,56 @@ const GameCard = (props: GameCardProps) => {
 
   return (
     <>
-      {/* displays current and total questions number */}
-      <p className="text-2xl">
-        Question {props.currentQuestionIndex + 1}/{props.totalQuestionsCount}
-      </p>
-      {/* displays the question corresponding to the questionCount number on
-   the questions array */}
-      <h2 className="text-neutral-900 mt-5">{props.questionData.question}</h2>
-      <div className=" flex flex-col mt-10 w-full">
-        {answers.map((answer, index) => {
-          return (
-            <button
-              key={index}
-              className="bg-lime-800 text-white p-3 rounded w-full text-lg 
-          mb-3"
-              onClick={() => {
-                props.onAnswer(answer === props.questionData.correctAnswer);
-              }}
+      <div className=" relative h-screen flex items-center justify-center ">
+        <img
+          src={stars}
+          className=" absolute z-30 top-32 left-2 max-w-72 rotate-12"
+        />
+        {/* displays current and total questions number */}
+        <div className=" absolute drop-shadow-lg">
+          <img src={dotsImg} className="-z-20" />
+          {/* tape and questions count */}
+          <div className="absolute w-60 -top-10 -right-10 ">
+            {/* tape img */}
+            <img src={pinkTape} />
+            {/* question count */}
+            <p
+              className="text-2xl absolute top-10 right-3 
+            rotate-12 question-count"
             >
-              {answer}
-            </button>
-          );
-        })}
+              Question {props.currentQuestionIndex + 1}/
+              {props.totalQuestionsCount}
+            </p>
+          </div>
+          <div
+            className=" flex flex-col  w-96 min-h-fit m-5 
+        rounded p-5 sm:text-center z-10 top-20 "
+          >
+            {/* question */}
+            <h2 className="text-neutral-900  mt-5 text-xl question top-0">
+              {props.questionData.question}
+            </h2>
+            {/* answers buttons */}
+            <div className=" flex flex-col mt-10 min-w-60 max-w-96 bottom-0 ">
+              {answers.map((answer, index) => {
+                return (
+                  <button
+                    key={index}
+                    className=" text-white p-3 rounded w-full text-lg 
+          mb-3 drop-shadow-lg button"
+                    onClick={() => {
+                      props.onAnswer(
+                        answer === props.questionData.correctAnswer
+                      );
+                    }}
+                  >
+                    {answer}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

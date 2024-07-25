@@ -74,32 +74,6 @@ const useQuiz = (args: {
       });
   }, [setIsUsernameDefined, setScore, setUsername]);
 
-  // const showTopPlayers = useCallback(() => {
-  //   fetch(`${BACKEND_URL}/players`)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((players: Player[]) => {
-  //       // sets all the players in a state
-  //       // do i need this? //help
-  //       // setPlayersDatabase(players);
-
-  //       // sorts the players array into descending order
-  //       const sorted = [...players].sort((a, b) => b.score - a.score);
-  //       setSortedPlayers(sorted);
-  //       console.log(" sorted players", sortedPlayers);
-
-  //       // selects the highest scores from the players array
-  //       const top = sortedPlayers.slice(0, TOP_PLAYERS_COUNT);
-  //       setTopPlayers(top);
-  //     })
-  //     .catch((e) => console.log("there was a problem fetching the
-  // players", e));
-  // }, [sortedPlayers]);
-
   // help
   useEffect(() => {
     reloadGame();
