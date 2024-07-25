@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { QuestionData } from "../lib/types";
-import dotsImg from "../assets/img/dots.jpg";
 import pinkTape from "../assets/img/pinkTape.png";
 
 type GameCardProps = {

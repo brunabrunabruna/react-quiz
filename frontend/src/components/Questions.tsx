@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LoadingCard from "./LoadingCard";
-import Username from "./UsernameInput";
+import UsernameForm from "./UsernameForm";
 import CardContainer from "./CardContainer";
 import GameCard from "./GameCard";
 import useQuiz from "../hooks/useQuiz";
@@ -32,7 +32,7 @@ const Questions = () => {
   if (!isUsernameDefined) {
     return (
       <CardContainer>
-        <Username
+        <UsernameForm
           username={username}
           setUsername={setUsername}
           setIsUsernameDefined={setIsUsernameDefined}

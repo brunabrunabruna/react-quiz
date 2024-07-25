@@ -7,21 +7,22 @@ type CardContainerProps = {
 
 const CardContainer = (props: CardContainerProps) => {
   return (
-    <div
-      className=" relative h-screen flex flex-col 
-    items-center justify-center"
-    >
-      {/* title */}
-
-      <div className=" absolute drop-shadow-lg  sm:m-4 ">
-        <img src={dotsImg} className="" />
-      </div>
-      <div className=" relative text-5xl top-0 ">crazy quiz</div>
+    <div className=" flex h-screen w-screen justify-center items-center">
       <div
-        className=" flex flex-col items-center text-center 
-     w-96 m-5 rounded p-5 sm:text-center relative "
+        className=" relative  flex flex-col 
+    items-center justify-center w-96 h-96 drop-shadow-lg "
       >
-        {props.children}
+        {/* title */}
+
+        <div className=" absolute inset-0 ">
+          <img src={dotsImg} className=" object-cover" />
+        </div>
+        <div
+          className=" flex flex-col justify-center items-center text-center 
+     w-96 m-5 rounded p-5  relative grow"
+        >
+          {props.children}
+        </div>
       </div>
     </div>
   );
