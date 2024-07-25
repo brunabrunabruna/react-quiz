@@ -19,8 +19,8 @@ const GameOverCard = (props: {
           </div>
         </div>
         <button
-          className="bg-lime-800 text-white p-3 rounded w-full text-lg 
-mb-3 mt-3"
+          className=" p-3 rounded w-full text-lg 
+mb-3 mt-3 button"
           onClick={() => {
             props.reloadGame();
           }}

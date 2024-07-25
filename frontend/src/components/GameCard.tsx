@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { QuestionData } from "../lib/types";
 import dotsImg from "../assets/img/dots.jpg";
 import pinkTape from "../assets/img/pinkTape.png";
-import stars from "../assets/img/stars.png";
 
 type GameCardProps = {
   currentQuestionIndex: number;
@@ -37,12 +36,12 @@ const GameCard = (props: GameCardProps) => {
   return (
     <>
       <div className=" relative h-screen flex items-center justify-center ">
-        <img
-          src={stars}
-          className=" absolute z-30 top-32 left-2 max-w-72 rotate-12"
-        />
         {/* displays current and total questions number */}
-        <div className=" absolute drop-shadow-lg">
+        <div
+          className=" flex items-center justify-center
+         absolute drop-shadow-lg"
+        >
+          {/* background img */}
           <img src={dotsImg} className="-z-20" />
           {/* tape and questions count */}
           <div className="absolute w-60 -top-10 -right-10 ">
@@ -57,12 +56,17 @@ const GameCard = (props: GameCardProps) => {
               {props.totalQuestionsCount}
             </p>
           </div>
+
+          {/* question and answers */}
           <div
-            className=" flex flex-col  w-96 min-h-fit m-5 
-        rounded p-5 sm:text-center z-10 top-20 "
+            className=" flex flex-col  w-96  m-5 
+        rounded p-5 sm:text-center z-10 top-20 absolute"
           >
             {/* question */}
-            <h2 className="text-neutral-900  mt-5 text-xl question top-0">
+            <h2
+              className="text-neutral-900  mt-5 text-xl question 
+            top-0 max-w-full"
+            >
               {props.questionData.question}
             </h2>
             {/* answers buttons */}

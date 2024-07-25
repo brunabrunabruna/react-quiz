@@ -16,15 +16,16 @@ const Username = (props: UsernameProps) => {
   };
   return (
     <div>
-      <div>enter your username:</div>
+      <div className="mb-5">enter your username:</div>
       <input
         type="text"
         name="username"
         id="username"
         onChange={handleChange}
+        className=" bg-gray-300 p-3 rounded-lg"
       />
       <button
-        className=" drop-shadow-lg p-3 m-3 bg-white rounded-lg "
+        className=" drop-shadow-lg p-3 m-3 rounded-lg button "
         onClick={handleClick}
       >
         Start Game
