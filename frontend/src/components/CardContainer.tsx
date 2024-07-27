@@ -10,7 +10,7 @@ const CardContainer = (props: CardContainerProps) => {
     <div className=" flex h-screen w-screen justify-center items-center">
       <div
         className=" relative  flex flex-col 
-    items-center justify-center w-96 h-96 drop-shadow-lg "
+    items-center justify-center  drop-shadow-lg "
       >
         {/* title */}
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { QuestionData } from "../lib/types";
 import pinkTape from "../assets/img/pinkTape.png";
+import dotsImg from "../assets/img/dots.jpg";
 
 type GameCardProps = {
   currentQuestionIndex: number;

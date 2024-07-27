@@ -13,14 +13,14 @@ import express from "express";
 
 // for some reason cors import has to be the older version,
 // otherwise it fails to run
-import cors from "cors";
+const cors = require("cors");
 
 const app = express();
 const PORT = 3000;
 const TOP_PLAYERS_COUNT = 10;
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({}));
 
 // connecting to the mongodb database using mongoose.
 // MONGO_STRING is defined at .env
@@ -66,10 +66,10 @@ app.post("/players", (request, response) => {
     // retrieves a max of 10 (or top players count)
     try {
       const topPlayers = await Player.find()
-        .sort({ score: "desc" })
+        .sort({ score: -1 })
         .limit(TOP_PLAYERS_COUNT)
         .exec();
-      console.log(topPlayers);
+      console.log("ttop playeers", topPlayers);
 
       // sends the top players list as a response
       // (which can be accessed in the frontend)
