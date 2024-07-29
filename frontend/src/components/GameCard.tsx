@@ -44,7 +44,7 @@ const GameCard = (props: GameCardProps) => {
           {/* background img */}
           <img src={dotsImg} className="-z-20" />
           {/* tape and questions count */}
-          <div className="absolute w-60 -top-10 -right-10 ">
+          <div className="absolute w-60 -top-10 -right-10 tape ">
             {/* tape img */}
             <img src={pinkTape} />
             {/* question count */}

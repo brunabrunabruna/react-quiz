@@ -50,3 +50,15 @@ body {
 
 .title {
 }
+
+@media (max-width: 600px) {
+  .tape {
+    width: 200px;
+    top: 0px;
+    right: 20px;
+  }
+  .question-count {
+    top: 4rem;
+    font-size: 1.2rem;
+  }
+}

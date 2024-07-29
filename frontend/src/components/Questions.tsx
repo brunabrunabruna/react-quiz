@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LoadingCard from "./LoadingCard";
 import UsernameForm from "./UsernameForm";
-import CardContainer from "./CardContainer";
+import Screen from "./Screen";
 import GameCard from "./GameCard";
 import useQuiz from "../hooks/useQuiz";
 import GameOverCard from "./GameOverCard";
@@ -31,34 +31,36 @@ const Questions = () => {
   // user defines their username
   if (!isUsernameDefined) {
     return (
-      <CardContainer>
+      <Screen>
         <UsernameForm
           username={username}
           setUsername={setUsername}
           setIsUsernameDefined={setIsUsernameDefined}
         />
-      </CardContainer>
+      </Screen>
     );
   }
 
   // displays this component if api is still being fetched
   if (isLoading || !questions.length) {
     return (
-      <CardContainer>
+      <Screen>
         <LoadingCard />
-      </CardContainer>
+      </Screen>
     );
   }
 
   if (isGameOver) {
     return (
-      <GameOverCard
-        username={username}
-        score={score}
-        questionsLength={questions.length}
-        reloadGame={reloadGame}
-        topPlayers={topPlayers}
-      />
+      <Screen>
+        <GameOverCard
+          username={username}
+          score={score}
+          questionsLength={questions.length}
+          reloadGame={reloadGame}
+          topPlayers={topPlayers}
+        />
+      </Screen>
     );
   } else {
     return (
