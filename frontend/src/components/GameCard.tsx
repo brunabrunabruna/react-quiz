@@ -76,7 +76,7 @@ const GameCard = (props: GameCardProps) => {
                   <button
                     key={index}
                     className=" text-white p-3 rounded w-full text-lg 
-          mb-3 drop-shadow-lg button"
+          mb-3 drop-shadow-lg button answers"
                     onClick={() => {
                       props.onAnswer(
                         answer === props.questionData.correctAnswer
