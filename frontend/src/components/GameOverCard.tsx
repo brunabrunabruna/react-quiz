@@ -1,6 +1,7 @@
 import React from "react";
 import { Player } from "../lib/types";
 import dotsImg from "../assets/img/dots.jpg";
+import Button from "../Button";
 
 const GameOverCard = (props: {
   username: string;
@@ -31,14 +32,13 @@ const GameOverCard = (props: {
               {props.score}/{props.questionsLength}
             </div>
           </div>
-          <button
+          <Button
+            text="restart game"
             className=" drop-shadow-lg p-3 m-3 rounded-lg button "
             onClick={() => {
               props.reloadGame();
             }}
-          >
-            restart game
-          </button>
+          />
           <div>
             <div className=" p-3 text-lg font-bold">top 10 players:</div>
             {props.topPlayers.map((player, index) => (

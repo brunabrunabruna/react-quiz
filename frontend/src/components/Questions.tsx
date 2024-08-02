@@ -73,7 +73,10 @@ const Questions = () => {
               if (isCorrect) {
                 setScore((prevScore) => prevScore + 1);
               }
-              setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+
+              setTimeout(() => {
+                setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+              }, 1000);
             }}
             totalQuestionsCount={questions.length}
           />

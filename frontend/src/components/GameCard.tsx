@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { QuestionData } from "../lib/types";
 import pinkTape from "../assets/img/pinkTape.png";
 import dotsImg from "../assets/img/dots.jpg";
+import Button from "../Button";
 
 type GameCardProps = {
   currentQuestionIndex: number;
@@ -12,7 +13,7 @@ type GameCardProps = {
 
 const GameCard = (props: GameCardProps) => {
   const [answers, setAnswers] = useState<string[]>([]);
-
+  const [clicked, setClicked] = useState(false);
   // sets the answers with the already shuffled array
   useEffect(() => {
     // generates a random index number for correct_answer
@@ -33,16 +34,33 @@ const GameCard = (props: GameCardProps) => {
     console.log(props.questionData.correctAnswer);
   }, [props.questionData]);
 
+  // resets click and has correct answer, if has correct answer
+  // was previously set to true
+  useEffect(() => {
+    setClicked(false);
+  }, [props.currentQuestionIndex]);
+
+  // click function when answer buttun gets clicked
+  const handleClick = (answer: string) => {
+    props.onAnswer(answer === props.questionData.correctAnswer);
+    setClicked(true);
+  };
+
   return (
     <>
       <div className=" relative h-screen flex items-center justify-center ">
         {/* displays current and total questions number */}
         <div
           className=" flex items-center justify-center
-         absolute drop-shadow-lg"
+         absolute drop-shadow-lg rounded-lg"
         >
-          {/* background img */}
-          <img src={dotsImg} className="-z-20" />
+          <div
+            className=" inset-0 object-cover 
+        overflow-hidden rounded-lg "
+          >
+            {/* background img */}
+            <img src={dotsImg} className="-z-20" />
+          </div>
           {/* tape and questions count */}
           <div className="absolute w-60 -top-10 -right-10 tape ">
             {/* tape img */}
@@ -71,22 +89,22 @@ const GameCard = (props: GameCardProps) => {
             </h2>
             {/* answers buttons */}
             <div className=" flex flex-col mt-10 min-w-60 max-w-96 bottom-0 ">
-              {answers.map((answer, index) => {
-                return (
-                  <button
-                    key={index}
-                    className=" text-white p-3 rounded w-full text-lg 
-          mb-3 drop-shadow-lg button answers"
-                    onClick={() => {
-                      props.onAnswer(
-                        answer === props.questionData.correctAnswer
-                      );
-                    }}
-                  >
-                    {answer}
-                  </button>
-                );
-              })}
+              {answers.map((answer, index) => (
+                <Button
+                  text={answer}
+                  key={index}
+                  version={
+                    clicked
+                      ? answer === props.questionData.correctAnswer
+                        ? "answer-correct"
+                        : "answer-incorrect"
+                      : ""
+                  }
+                  onClick={() => {
+                    handleClick(answer);
+                  }}
+                />
+              ))}
             </div>
           </div>
         </div>

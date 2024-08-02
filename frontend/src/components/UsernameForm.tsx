@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import dotsImg from "../assets/img/dots.jpg";
+import Button from "../Button";
 
 type UsernameProps = {
   username: string;
@@ -50,16 +51,10 @@ const UsernameForm = (props: UsernameProps) => {
           id="username"
           placeholder="myUsername"
           onChange={handleChange}
-          className=" bg-gray-300 p-3 rounded-lg placeholder-shown:"
+          className=" bg-gray-300 p-3 rounded-lg mb-3"
         />
         {buttonDisabled && <div>*field required</div>}
-        <button
-          className=" drop-shadow-lg p-3 m-3 rounded-lg button  "
-          onClick={handleClick}
-          // disabled={props.username.trim() === ""}
-        >
-          Start Game
-        </button>
+        <Button onClick={handleClick} text="Start Game"></Button>
       </div>
     </div>
   );

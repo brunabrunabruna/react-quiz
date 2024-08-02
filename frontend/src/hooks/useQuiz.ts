@@ -7,6 +7,8 @@ import { decode } from "html-entities";
 const BACKEND_URL = "http://localhost:3000";
 const QUIZ_API_ENDPOINT = "https://opentdb.com/api.php";
 const QUIZ_QUESTION_COUNT = 10;
+const QUIZ_DIFFICULTY = "easy";
+
 const useQuiz = (args: {
   setUsername: (username: string) => void;
   setIsUsernameDefined: (isUsernameDefined: boolean) => void;
@@ -24,8 +26,6 @@ const useQuiz = (args: {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [isGameOver, setIsGameOver] = useState(false);
-  const [playersDatabase, setPlayersDatabase] = useState<Player[]>([]);
-  const [sortedPlayers, setSortedPlayers] = useState<Player[]>([]);
   const [topPlayers, setTopPlayers] = useState<Player[]>([]);
 
   // fetches data from the api, transforms the response into json, and
@@ -39,7 +39,10 @@ const useQuiz = (args: {
     setIsLoading(true);
     setIsGameOver(false);
 
-    fetch(`${QUIZ_API_ENDPOINT}?amount=${QUIZ_QUESTION_COUNT}&type=multiple`)
+    fetch(
+      `${QUIZ_API_ENDPOINT}?amount=${QUIZ_QUESTION_COUNT}
+      &difficulty=${QUIZ_DIFFICULTY}&type=multiple`
+    )
       .then((response) => response.json())
       .then((data) => {
         // handles the decoding of some characters like "" from

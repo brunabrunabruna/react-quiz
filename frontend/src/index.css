@@ -20,28 +20,6 @@ body {
   font-family: "SpaceMono Regular", sans-serif;
   background-color: #fff2f7;
 }
-/* body {
-  font-family: "Handjet Bold", sans-serif;
-} */
-
-.button {
-  background-color: #da91ad;
-  color: white;
-  filter: drop-shadow(0.5, 0.5, 1, 1);
-  transition: transform 1s, ease 0;
-}
-
-.button-correct {
-  background-color: green;
-}
-
-.button-incorrect {
-  background-color: red;
-}
-
-.button:hover {
-  transform: scale(1.05);
-}
 
 .question-count {
   top: 4.5rem;
@@ -54,9 +32,6 @@ body {
 
 .question {
   font-family: "SpaceMono Bold", sans-serif;
-}
-
-.title {
 }
 
 @media (max-width: 600px) {
