@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { QuestionData } from "../lib/types";
 import Button from "../Button";
 import dotsImg from "../assets/img/dots.jpg";
@@ -56,7 +57,8 @@ const GameCard = (props: GameCardProps) => {
     <>
       {/* displays current and total questions number */}
       <div
-        className="relative justify-center drop-shadow-lg  
+        className="relative justify-center 
+        drop-shadow-lg  
       w-screen sm:w-[570px]"
       >
         {/* background img */}
@@ -84,7 +86,7 @@ const GameCard = (props: GameCardProps) => {
           {/* answers buttons */}
           <div
             className="flex flex-col gap-4 mt-2 sm:mt-10 
-          items-stretch bottom-0 justify-center bg-slate-200 px-4"
+          items-stretch bottom-0 justify-center px-4"
           >
             {answers.map((answer, index) => (
               <Button

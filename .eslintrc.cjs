@@ -30,6 +30,7 @@ module.exports = {
     "tailwind.config.js",
   ],
   rules: {
+    "react/react-in-jsx-scope": "off",
     "spaced-comment": "error",
     "max-len": [
       "error",
