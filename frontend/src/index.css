@@ -20,7 +20,7 @@ body {
   font-family: "SpaceMono Regular", sans-serif;
   background-color: #fff2f7;
 }
-
+/* 
 .question-count {
   top: 4.5rem;
   right: 1.8rem;
@@ -35,11 +35,6 @@ body {
 }
 
 @media (max-width: 600px) {
-  .tape {
-    width: 200px;
-    top: 0px;
-    right: 20px;
-  }
   .question-count {
     top: 4rem;
     font-size: 1.2rem;
@@ -52,4 +47,4 @@ body {
   .answers {
     font-size: 1rem;
   }
-}
+} */

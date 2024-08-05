@@ -6,7 +6,7 @@ const Button = (props: {
   text: string;
   version?: ButtonVersion;
   onClick: () => void;
-  // className?: string;
+  disabled?: boolean;
 }) => {
   let variableStyle = "";
 
@@ -26,10 +26,12 @@ const Button = (props: {
 
   return (
     <button
-      className={` ${variableStyle} drop-shadow-lg p-3 m-2 rounded-lg  text-lg
-         text-white 
-      `}
+      className={`${variableStyle} text-base drop-shadow-lg 
+      p-3 rounded-lg text-white 
+      sm:text-lg disabled:scale-100 
+    disabled:bg-gray-200 disabled:text-gray-500 disabled:drop-shadow-none`}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       {props.text}
     </button>

@@ -64,7 +64,7 @@ const Questions = () => {
     );
   } else {
     return (
-      <div>
+      <Screen>
         {currentQuestionIndex < questions.length && (
           <GameCard
             currentQuestionIndex={currentQuestionIndex}
@@ -81,7 +81,7 @@ const Questions = () => {
             totalQuestionsCount={questions.length}
           />
         )}
-      </div>
+      </Screen>
     );
   }
 };

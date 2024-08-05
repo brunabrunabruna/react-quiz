@@ -9,15 +9,18 @@ type UsernameProps = {
 };
 
 const UsernameForm = (props: UsernameProps) => {
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleChange = (event: { target: { value: string } }) => {
     props.setUsername(event.target.value);
+
+    // diables button when imput is empty
+    setIsButtonDisabled(!event.target.value);
   };
 
   const handleClick = () => {
     if (!props.username) {
-      setButtonDisabled(true);
+      setIsButtonDisabled(true);
     } else {
       props.setIsUsernameDefined(true);
     }
@@ -51,10 +54,13 @@ const UsernameForm = (props: UsernameProps) => {
           id="username"
           placeholder="myUsername"
           onChange={handleChange}
-          className=" bg-gray-300 p-3 rounded-lg mb-3"
+          className=" bg-white border-2 border-pink p-3 rounded-lg mb-3"
         />
-        {buttonDisabled && <div>*field required</div>}
-        <Button onClick={handleClick} text="Start Game"></Button>
+        <Button
+          onClick={handleClick}
+          text="Start Game"
+          disabled={isButtonDisabled}
+        />
       </div>
     </div>
   );
