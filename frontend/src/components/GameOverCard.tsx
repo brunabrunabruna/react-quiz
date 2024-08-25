@@ -1,4 +1,3 @@
-import React from "react";
 import { Player } from "../lib/types";
 import dotsImg from "../assets/img/dots.jpg";
 import Button from "../Button";

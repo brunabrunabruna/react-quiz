@@ -1,5 +1,4 @@
 import { useState } from "react";
-import React from "react";
 import LoadingCard from "./LoadingCard";
 import UsernameForm from "./UsernameForm";
 import Screen from "./Screen";

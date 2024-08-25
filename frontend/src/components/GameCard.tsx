@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import React from "react";
 import { QuestionData } from "../lib/types";
 import Button from "../Button";
 import dotsImg from "../assets/img/dots.jpg";

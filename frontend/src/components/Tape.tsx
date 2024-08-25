@@ -1,4 +1,3 @@
-import React from "react";
 import pinkTape from "../assets/img/pinkTape.png";
 
 const Tape = (props: {

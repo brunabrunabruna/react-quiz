@@ -1,5 +1,3 @@
-import React from "react";
-
 const LoadingCard = () => {
   return <div>Loading...</div>;
 };

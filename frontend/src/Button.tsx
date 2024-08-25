@@ -1,5 +1,3 @@
-import React from "react";
-
 type ButtonVersion = "default" | "answer-correct" | "answer-incorrect";
 
 const Button = (props: {

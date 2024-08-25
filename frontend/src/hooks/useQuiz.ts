@@ -2,9 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Player, QuestionData } from "../lib/types";
 import { decode } from "html-entities";
 
-// "process is not defined"
-// const BACKEND_URL = process.env.VITE_BACKEND_URL || "http://localhost:3000";
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const QUIZ_API_ENDPOINT = "https://opentdb.com/api.php";
 const QUIZ_QUESTION_COUNT = 10;
 const QUIZ_DIFFICULTY = "easy";

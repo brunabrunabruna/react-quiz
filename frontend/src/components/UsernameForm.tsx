@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import dotsImg from "../assets/img/dots.jpg";
 import Button from "../Button";
 
