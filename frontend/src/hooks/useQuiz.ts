@@ -98,8 +98,6 @@ const useQuiz = (args: {
         .then((data: Player[]) => {
           if (data) {
             setTopPlayers(data);
-
-            console.log("data:", JSON.stringify(data));
           } else {
             console.log("no data passed from the server");
           }
@@ -107,14 +105,13 @@ const useQuiz = (args: {
         .catch((error) => {
           console.log("error:", error);
         });
-      console.log(`username:`, username, "score:", score);
     }
   }, [questions, currentQuestionIndex, score, username]);
 
   // logs top players
-  useEffect(() => {
-    console.log(" top10 players:", topPlayers);
-  }, [topPlayers]);
+  // useEffect(() => {
+  //   console.log(" top10 players:", topPlayers);
+  // }, [topPlayers]);
 
   return {
     isLoading,
